@@ -1,0 +1,44 @@
+.backgroundImage {
+    object-position: 0 0;
+    height:100vh; 
+    width:100%; 
+    filter: brightness(50%);
+    object-fit:cover;
+    position: fixed;
+    z-index:-1;
+    top:0;
+    left:0;
+}
+
+.absoluteWrapper{
+    position: absolute;
+    background-color: transparent;
+    top: 0;
+    left: 25%;
+    width:50%;
+}
+
+.formContainer {
+    background-color: white;
+    opacity: 85%;
+    border-radius: 15px;
+    padding-bottom: 45px;
+    padding-left: 60px;
+    padding-right: 60px;
+}
+
+@media (max-width: 450px) {
+    .formContainer {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+}
+
+@media (max-width: 1200px) {
+    .absoluteWrapper{
+        left: 7.5%;
+        width:85%;
+    }
+
+}

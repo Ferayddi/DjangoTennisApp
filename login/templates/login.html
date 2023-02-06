@@ -1,0 +1,92 @@
+{% extends 'loginmaster.html' %}
+
+
+{% block title %}
+Login Page
+{% endblock %}
+
+{% block content %}
+{% load static%}
+<img  class="backgroundImage" src="{% static 'images/campus-front.jpg'%}" alt="campus-front-image">
+
+<div class="absoluteWrapper large-up-padding">
+    <div class="container-fluid large-up-padding formContainer">
+        <div class="row justify-content-center ">
+            <div class="col-12">
+                <h1 class="heading"> Log in </h1>
+            </div>
+            
+        </div>
+
+        <div class="row justify-content-center large-up-padding">
+            <div class="col12">
+                {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                    <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</p>
+                    {% if message.tags == 'email warning' %}
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#verificationModal">
+                        Send verification email again
+                    </button>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-12">
+                <form  action="/login/signIn/" method="post" value="form">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                    <label for="email" class="form-label">Email address</label>
+                    <input required type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" autocomplete="off">
+                    <div id="emailHelp" class="form-text">
+                        <span style="color:red">INCLUDE @connect.ust.hk or @ust.hk (if staff). </span> </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input required name="password" type="password" class="form-control" id="password">
+                    </div>
+                    <div class="d-grid gap-2 py-4">
+                        <button type="submit" class="btn btn-danger btn-lg " value="Create User">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row justify-content-center up-padding">
+                <p style="text-align:center"><a href="/register"><u style=" margin-left:auto; color:blue; font-size:2.5vh">Not a member yet? Register HERE</u></a></p>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="verificationModal" tabindex="-1" aria-labelledby="verificationModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Send verification mail</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="/register/activation" method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="verificationEmail" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="verificationEmail" name="verificationEmail" aria-describedby="emailHelp">
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Send mail</button>
+            </div>
+
+          </form>
+        </div>
+        
+      </div>
+    </div>
+</div>
+
+{% endblock %}

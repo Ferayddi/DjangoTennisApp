@@ -1,0 +1,69 @@
+{% extends 'registeringmaster.html' %}
+{% load static %}
+{% block title %}
+registrationPage
+{% endblock %}
+
+{% block content %}
+    <img  class="backgroundImage" src="{% static 'images/campus-front.jpg'%}" alt="campus-front-image">
+
+    <div class="absoluteWrapper large-up-padding">
+        <div class="container-fluid large-up-padding formContainer">
+            <div class="row justify-content-center ">
+                <div class="col-12">
+                    <h1 class="heading"> Tennis Club registration </h1>
+                </div>
+                
+            </div>
+
+            <div class="row justify-content-center large-up-padding">
+                <div class="col-12">
+                    <form  action="/register/signUp" method="post" value="form">
+                        {% csrf_token %}
+                        {% if messages %}
+                        <div class="mb-3 messages">
+                            {% for message in messages %}
+                            <h5 class="warning"> {{message}} </h5>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        <input autofocus required type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" autocomplete="off">
+                        <div id="emailHelp" class="form-text">
+                            <span style="color:red">INCLUDE @connect.ust.hk or @ust.hk (if staff).</span> Make sure it is correct! Or else you won't receive emails correctly. </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="student_number" class="form-label">Student number</label>
+                            <input required name="student_id" type="number" class="form-control" id="student_number">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password1" class="form-label">Password</label>
+                            <input required name="password1" type="password" class="form-control" id="password1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password2" class="form-label">Confirm password</label>
+                            <input required name="password2" type="password" class="form-control" id="password2">
+                        </div>
+                        <div class="mb-3">
+                        <label for="password" class="form-label">English Name</label>
+                        <input required type="text" name="english_name" class="form-control" id="password" autocomplete="off">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Chinese Name (optional)</label>
+                            <input type="text" class="form-control" id="password" name="chinese_name" autocomplete="off">
+                        </div>
+                        <div class="d-grid gap-2 py-4">
+                            <button type="submit" class="btn btn-danger btn-lg " value="Create User">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row justify-content-center small-up-padding">
+                <p style="text-align:center"><a href="/login"><u style=" margin-left:auto; color:blue; font-size:2.5vh">
+                    Already a member? Login here</u></a></p>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}

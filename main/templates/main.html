@@ -1,0 +1,112 @@
+
+{% extends 'mainmaster.html'%}
+{% load static %}
+
+{% block title %}
+Main Page
+{% endblock %}
+
+{% block content %}
+
+<!-- <img  class="backgroundImage" src="{% static 'images/mainBackground.png'%}" alt="mainBackground"> -->
+<img class="ballImage" src="{% static 'images/tennisBall.png' %}" alt="tennis ball" >
+<img class="manImage" src="{% static 'images/cartoonMan.png' %}" alt="cartoon man playing tennis" >
+
+<div class="container-fluid appContainer">
+    <div class="row gy-5 gx-5 mx-0 mx-sm-5  align-items-center justify-content-center large-up-margin bottom-padding up-padding large-bottom-margin">
+        <div class=" appContent col-12  col-md-10 col-lg-8 col-xl-5 col-xxl-4 " >
+            {% if messages %}
+                <div class=" mt-4 messages">
+                    {% for message in messages %}
+                    <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <div class=" d-grid gap-5 row col-10 mx-auto large-bottom-margin up-padding">
+                    <button type="button" class=" order-1 practiceButton btn btn-outline-success largeButton">Practice Sign up</button>
+                    <button type="button" class=" order-2 forumButton btn btn-outline-success largeButton">Society forum</button>
+                    <button type="button" class="  order-3 profileButton btn btn-outline-success largeButton">Profile</button>
+                    <button type="button" class=" order-5 logoutButton btn btn-outline-success largeButton">Log out</button>
+                    {% if is_admin == 1 %}
+                    <button type="button" class=" order-4 adminButton btn btn-outline-success largeButton">Admin</button>
+                    {% endif %}
+                </div>
+        </div>
+
+        
+        <div id ="adminTab" class="  col-12  col-md-10 col-lg-4 col-xl-5 col-xxl-4 align-self-center ">
+            <div class="container-fluid appContent appTabs">
+                <div class="row">
+                    <h3 class="mb-4">What would you like to do:</h3>
+                    <p>Next practice: {{ PracticeDate }}</p>
+                </div>
+                <div class="row">
+                    <div class="d-grid col-6">
+                        <a href="" class="btn btn-outline-success">Manage session</a>
+                    </div>
+                    <div class="d-grid col-6">
+                        <a href="/confirmSessions" class="btn btn-outline-success">Send confirmations</a>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+
+        <div id ="practiceTab" class="  col-12  col-md-10 col-lg-4 col-xl-5 col-xxl-4 align-self-center ">
+            <div class="appContent appTabs">
+                <h3 class="mb-4">PRACTICE REGISTRATION</h3>
+                <p><b>Next practice: </b> {{ PracticeDate }}</p>
+                <p><b>Note:</b> You may cancel your registration up until the assignments emails are sent</p>
+                <p>After receiving the email confirming that your were assigned a spot, you are expected to attend. If you do not, we may suspend the membership</p>
+                <!-- show this only if not signed up yet-->
+                <form method="post" action="/practice">
+                    {% csrf_token %}
+                    <div class="mb-5">
+                        <label for="session_select" class="mb-2">Choose your session:</label>
+                        <select name ="session_select" id ="session-select" class="form-select" aria-label="Session select">
+                            <option selected value="1">Session 1 ({{session1_start}})</option>
+                            <option value="2">Session 2 ({{session2_start}})</option>
+                          </select>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row" >
+                            <div class="col-5 d-grid">
+                                <a class="btn btn-outline-danger btn-lg" href="/cancelPracticeSignUp">Cancel Sign up</a>
+                            </div>
+                            <div class="col-6 d-grid">
+                                <button type="submit" class="btn btn-outline-success btn-lg">Sign up</button>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </form>
+                <!-- If already signed up, show the date of practice, which session is signed up and click cancel -->
+            </div>
+        </div>
+
+        <div id ="forumTab" class="  col-12  col-md-10 col-lg-4 col-xl-5 col-xxl-4 align-self-center ">
+            <div class="appContent appTabs">
+                <p>Welcome to Forum</p>
+            </div>
+        </div>
+
+        <div id ="profileTab" class=" col-12 col-md-10 col-lg-4 col-xl-5 col-xxl-4 align-self-center ">
+            <div class="appContent appTabs">
+                <p>Welcome to profile</p>
+            </div>
+        </div>
+
+
+            
+    </div>
+
+</div>
+    
+
+    
+
+
+{% endblock %}

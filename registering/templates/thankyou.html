@@ -1,0 +1,26 @@
+{% extends 'registeringmaster.html' %}
+{% load static %}
+
+{% block title %}
+Thank you page
+{% endblock %}
+
+{% block content %}
+
+<img  class="backgroundImage" src="{% static 'images/campus-front.jpg'%}" alt="campus-front-image">
+
+    <div class="absoluteWrapper large-up-padding">
+        <div class="container-fluid large-up-padding formContainer">
+            <div class="row justify-content-center ">
+                <div class="col-12">
+                    <h1 class="heading"> Thank you, please check your email at: {{ email }} to activate your account </h1>
+                    <h5> The staff will contact you for setting up the duration of the membership and for 
+                        subsequent payments
+                    </h5>
+                    <a href="/login"> return to Log in page </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,90 @@
+
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+    font-family: Optima,Segoe,Segoe UI,Candara,Calibri,Arial,sans-serif; 
+
+}
+.large-left-padding {
+    padding-left: 60px;
+}
+
+.large-up-padding {
+    padding-top: 60px;
+}
+
+.large-up-margin {
+    margin-top: 60px;
+}
+
+.large-bottom-padding {
+    padding-bottom: 60px;
+}
+
+.large-bottom-margin {
+    margin-bottom: 60px;
+}
+
+.up-padding {
+    padding-top: 40px;
+}
+
+
+
+.bottom-padding {
+    padding-bottom: 40px;
+}
+
+.small-up-padding {
+    padding-top: 20px;
+}
+
+.small-bottom-padding {
+    padding-bottom: 20px;
+}
+
+.heading {
+    text-align: center;
+    font-size: 8vh;
+    font-weight: 700px;
+}
+
+
+.messages {
+    padding: 8px 20px;
+}
+
+.messages .success {
+    padding: 8px 20px;
+    text-align: center;
+    background-color: #afe9ba;
+    display: block;
+    border: none;
+    border-radius: 10px;
+    font-weight: 350;
+    font-size: 1.5rem;
+}
+
+.messages .warning {
+    padding: 8px 20px;
+    text-align: center;
+    background-color: #e09da3;
+    display: block;
+    border: none;
+    border-radius: 10px;
+    font-weight: 350;
+    font-size: 1.5rem;
+}
+
+@media (max-width: 450px) {
+    .heading {
+        font-size:6vh;
+    }
+
+}
+
+
+

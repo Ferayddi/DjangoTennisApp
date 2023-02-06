@@ -1,0 +1,1 @@
+web: gunicorn tennisWebsite.wsgi --log-file -
