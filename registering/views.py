@@ -101,9 +101,9 @@ def activate_user(request, uidb64, token):
     messages.add_message(request, messages.SUCCESS, 'Email verified, you can now login')
     context = {}
     return render(request, 'login.html', context)
-
-  print(user)
-  return render(request, 'authentication/activate-failed.html', {"user":user.english_name} )
+  else:
+    print(user)
+    return render(request, 'authentication/activate-failed.html', {"user":user.english_name} )
 
 
 def sendAgain(request):
