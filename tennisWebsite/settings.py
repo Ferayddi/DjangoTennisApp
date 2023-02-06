@@ -33,15 +33,18 @@ environ.Env.read_env()
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
+
+#UNCOMMENT THIS FOR PRODUCTION 
+
 SECURE_SSL_REDIRECT = True
-SECURE_HSTS_SECONDS = True
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
+SECURE_HSTS_SECONDS = False
+SECURE_HSTS_INCLUDE_SUBDOMAINS = False 
+SECURE_HSTS_PRELOAD = False 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['tennis-society-ust.herokuapp.com']
+ALLOWED_HOSTS = ['*']   # tennis-society-ust.herokuapp.com
 
 
 
