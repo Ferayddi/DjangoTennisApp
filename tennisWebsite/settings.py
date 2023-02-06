@@ -36,7 +36,7 @@ SECRET_KEY = env('SECRET_KEY')
 
 #FOR PRODUCTION SET ALL OF THIS TO TRUE
 
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False
 SECURE_HSTS_SECONDS = False
 SECURE_HSTS_INCLUDE_SUBDOMAINS = False 
 SECURE_HSTS_PRELOAD = False 
@@ -44,7 +44,7 @@ SECURE_HSTS_PRELOAD = False
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['tennis-society-ust.herokuapp.com']   # tennis-society-ust.herokuapp.com
+ALLOWED_HOSTS = ['*']   # tennis-society-ust.herokuapp.com
 
 
 
