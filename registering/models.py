@@ -7,7 +7,7 @@ class Member(models.Model):
     chinese_name = models.CharField(max_length=255, null=True)
     email = models.EmailField()
     password = models.CharField(max_length=255)
-    student_id = models.PositiveSmallIntegerField()
+    student_id = models.IntegerField()
     membership_years_duration = models.PositiveSmallIntegerField(null=True)
     membership_start_date = models.DateField(null=True)
     paid = models.BooleanField(null=True)
