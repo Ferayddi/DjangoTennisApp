@@ -1,6 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from django.template import loader
+from django.template.loader import render_to_string
 from functools import wraps
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -8,17 +7,19 @@ from datetime import datetime, timedelta
 from django.conf import settings
 from .models import Sessions
 import threading
-from django.core.mail import EmailMessage
-
+from django.core.mail import EmailMessage, send_mail
+from registering.models import Member
 
 class EmailThread(threading.Thread):
-  def __init__(self, email):
-    self.email = email
+  def __init__(self, subject, body, from_email, emails_list):
+    self.subject = subject
+    self.body = body
+    self.from_email = from_email
+    self.emails_list = emails_list
     threading.Thread.__init__(self)
 
   def run(self):
-    self.email.send()
-
+    send_mail(subject= self.subject, message = self.body, from_email = self.from_email, fail_silently = True, recipient_list = self.emails_list, auth_password = settings.EMAIL_HOST_PASSWORD, auth_user= settings.EMAIL_HOST_USER, html_message= self.body)
 
 
 def login_access_only():
@@ -51,14 +52,21 @@ def home(request):
     dt = datetime.today()
     day_wanted = int(settings.WEEK_SESSION)   #Which day the sessions are is defined in the environment file
     daysDiff = (day_wanted - dt.weekday()) % 7  
-    #date + datetime.timedelta(days=days)
     nextPractice = dt + timedelta(days=daysDiff)
     nextPracticeDate = nextPractice.date()
+
+    student_info = Member.objects.filter(email= request.session["email"]).values()[0]
+    membership_paid = "No" if student_info["paid"] == False else "Yes"
     context = { #PracticeDate
         "PracticeDate": nextPracticeDate,
         "session1_start": settings.SESSION1_START,
         "session2_start": settings.SESSION2_START,
-        "is_admin": request.session["is_admin"]
+        "is_admin": request.session["is_admin"],
+        "email": student_info["email"],
+        "english_name": student_info["english_name"],
+        "student_id": student_info["student_id"],
+        "membership_duration": student_info["membership_years_duration"],
+        "membership_paid": membership_paid
     }
     return render(request, 'main.html', context)
 
@@ -128,8 +136,32 @@ def confirmSessions(request):
 
 
     #send emails: 
-  
-    
+    session1_emails = Sessions.objects.filter(date = nextPracticeDate, session_assigned= "1" ).values_list('member_email', flat=True)
+    session1_emails = list(session1_emails)
+    ##########
+
+
+    ###### TRIAL ############
+    email_session1_subject = 'Session 1 confirmation, TENNIS SOCIETY'
+    email_session1_body = render_to_string('practiceEmails/email_body.html', {
+        "session_number": "1",
+        "date": nextPracticeDate,
+        "time": "6-7pm",
+    })
+    EmailThread(email_session1_subject, email_session1_body,settings.EMAIL_FROM_USER, session1_emails)
+    ###### TRIAL ############
+
+    session2_emails = Sessions.objects.filter(date = nextPracticeDate, session_assigned= "2" ).values_list('member_email', flat=True)
+    session2_emails = list(session2_emails)
+
+    email_session2_subject = 'Session 2 confirmation, TENNIS SOCIETY'
+    email_session2_body = render_to_string('practiceEmails/email_body.html', {
+        "session_number": "2",
+        "date": nextPracticeDate,
+        "time": "7-8pm",
+    })
+    EmailThread(email_session2_subject, email_session2_body,settings.EMAIL_FROM_USER, session2_emails)
+
 
 
 

@@ -60,7 +60,7 @@ Main Page
                 <h3 class="mb-4">PRACTICE REGISTRATION</h3>
                 <p><b>Next practice: </b> {{ PracticeDate }}</p>
                 <p><b>Note:</b> You may cancel your registration up until the assignments emails are sent</p>
-                <p>After receiving the email confirming that your were assigned a spot, you are expected to attend. If you do not, we may suspend the membership</p>
+                <p>After receiving the email confirming that you were assigned a spot, you are expected to attend. If you do not, we may suspend the membership</p>
                 <!-- show this only if not signed up yet-->
                 <form method="post" action="/practice">
                     {% csrf_token %}
@@ -95,7 +95,12 @@ Main Page
 
         <div id ="profileTab" class=" col-12 col-md-10 col-lg-4 col-xl-5 col-xxl-4 align-self-center ">
             <div class="appContent appTabs">
-                <p>Welcome to profile</p>
+                <h3 style="font-weight:bold"> Profile </h3>
+                    <h5><span style="font-weight:bold;line-height:2">Name: </span><span>{{ english_name }}</span></h5>
+                    <h5><span style="font-weight:bold;line-height:2">Student ID: </span><span>{{ student_id }}</span></h5>
+                    <h5><span style="font-weight:bold;line-height:2">Email: </span><span>{{ email }}</span></h5>
+                    <h5><span style="font-weight:bold;line-height:2">Membership duration: </span><span>{{ membership_duration }}</span></h5>
+                    <h5><span style="font-weight:bold;line-height:2">Membership paid: </span><span>{{ membership_paid }}</span></h5>
             </div>
         </div>
 

@@ -85,6 +85,7 @@ INSTALLED_APPS = [
     'login',
     'main',
     'django_email_verification',  # you have to add this
+    'dbbackup',  # django-dbbackup
 ]
 
 MIDDLEWARE = [
@@ -131,6 +132,11 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+
+##BACKUPS: (to make backups, run py manage.py dbbackup)
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DBBACKUP_STORAGE_OPTIONS = {'location': BASE_DIR / 'var/backups/'}
 
 
 # Password validation
