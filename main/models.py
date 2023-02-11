@@ -4,6 +4,7 @@ from django.db import models
 
 class PriorityRecord(models.Model):
     member_email = models.CharField(max_length=200)
+    week = models.CharField(max_length=250, default="", null=True)
 
 
 class Sessions(models.Model):

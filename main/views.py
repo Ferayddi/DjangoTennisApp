@@ -19,7 +19,7 @@ class EmailThread(threading.Thread):
     threading.Thread.__init__(self)
 
   def run(self):
-    send_mail(subject= self.subject, message = self.body, from_email = self.from_email, fail_silently = True, recipient_list = self.emails_list, auth_password = settings.EMAIL_HOST_PASSWORD, auth_user= settings.EMAIL_HOST_USER, html_message= self.body)
+    send_mail(subject= self.subject, message = self.body, from_email = self.from_email, fail_silently = False, recipient_list = self.emails_list, auth_password = settings.EMAIL_HOST_PASSWORD, auth_user= settings.EMAIL_HOST_USER, html_message= self.body)
 
 
 def login_access_only():
@@ -148,7 +148,8 @@ def confirmSessions(request):
         "date": nextPracticeDate,
         "time": "6-7pm",
     })
-    EmailThread(email_session1_subject, email_session1_body,settings.EMAIL_FROM_USER, session1_emails)
+
+    EmailThread(email_session1_subject, email_session1_body,settings.EMAIL_FROM_USER, session1_emails).start()
     ###### TRIAL ############
 
     session2_emails = Sessions.objects.filter(date = nextPracticeDate, session_assigned= "2" ).values_list('member_email', flat=True)
@@ -160,7 +161,7 @@ def confirmSessions(request):
         "date": nextPracticeDate,
         "time": "7-8pm",
     })
-    EmailThread(email_session2_subject, email_session2_body,settings.EMAIL_FROM_USER, session2_emails)
+    EmailThread(email_session2_subject, email_session2_body,settings.EMAIL_FROM_USER, session2_emails).start()
 
 
 
