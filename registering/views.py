@@ -100,8 +100,7 @@ def activate_user(request, uidb64, token):
     return redirect('/login')
     #return render(request, 'login.html', context)
   else: 
-    context = {}
-    return render(request, 'authentication/activate-failed.html', context )
+    return redirect('/login')
     
 
 
