@@ -90,7 +90,7 @@ def signUp(request):
 def activate_user(request, uidb64, token):
   try:
     uid= force_str(urlsafe_base64_decode(uidb64))
-    user = Member.objects.get(email=uid)
+    user = Member.objects.filter(email=uid)[0]
   except Exception as e:
     user = None
 
