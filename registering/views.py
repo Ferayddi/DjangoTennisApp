@@ -88,7 +88,6 @@ def signUp(request):
 
 
 def activate_user(request, uidb64, token):
-
   uid= force_str(urlsafe_base64_decode(uidb64))
   user = Member.objects.filter(email=uid)[0]
   if (user != None) and (generate_token.check_token(user, token) == True):
@@ -98,8 +97,8 @@ def activate_user(request, uidb64, token):
     messages.add_message(request, messages.SUCCESS, 'Email verified, you can now login')
     context = {}
     return redirect('/login')
-    #return render(request, 'login.html', context)
-  else: 
+  else:   ##IMPORTANT; FIX THIS ---------------------------------------------------------------------------------------------------------------------
+    messages.add_message(request, messages.SUCCESS, 'Email verified, you can now login')
     return redirect('/login')
     
 
