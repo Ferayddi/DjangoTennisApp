@@ -93,16 +93,16 @@ def activate_user(request, uidb64, token):
   except Exception as e:
     user = None
 
-  if user and generate_token.check_token(user, token):
+  if (not user) or(not generate_token.check_token(user, token)):
+    return render(request, 'authentication/activate-failed.html', {"user":user.english_name} )
+    #return render(request, 'login.html', context)
+  else:
     user.is_active = True
     user.save()
 
     messages.add_message(request, messages.SUCCESS, 'Email verified, you can now login')
     context = {}
     return redirect('/login')
-    #return render(request, 'login.html', context)
-  else:
-    return render(request, 'authentication/activate-failed.html', {"user":user.english_name} )
 
 
 def sendAgain(request):
