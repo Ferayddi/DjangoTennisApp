@@ -64,13 +64,26 @@ Main Page
                 <!-- show this only if not signed up yet-->
                 <form method="post" action="/practice">
                     {% csrf_token %}
-                    <div class="mb-5">
+                    <div class="mb-3">
                         <label for="session_select" class="mb-2">Choose your session:</label>
                         <select name ="session_select" id ="session-select" class="form-select" aria-label="Session select">
                             <option selected value="1">Session 1 ({{session1_start}})</option>
                             <option value="2">Session 2 ({{session2_start}})</option>
                           </select>
+                          <div class="form-check mt-4">
+                            <input class="form-check-input" type="checkbox" value="1" id="session_flexible" name="session_flexible" checked>
+                            <label class="form-check-label" for="session_flexible">
+                              Allow us to switch you to other session, if desired session is full
+                            </label>
+                          </div>
                     </div>
+                    {% if already_signed_up != '0' %}
+                    <div class="mb-3">
+                        <div class="row">
+                            <p style="color:red; font-weight:bold">You are already signed up for session {{already_signed_up}}</p>
+                        </div>
+                    </div>
+                    {% endif %}
                     <div class="mb-3">
                         <div class="row" >
                             <div class="col-5 d-grid">

@@ -3,5 +3,8 @@ from .models import Sessions
 from .models import PriorityRecord
 
 # Register your models here.
-admin.site.register(Sessions)
+class SessionsAdmin(admin.ModelAdmin):
+  list_display = ("date", "member_email", "session_choice", "session_flexible", "session_assigned", "attended")
+
+admin.site.register(Sessions, SessionsAdmin)
 admin.site.register(PriorityRecord)

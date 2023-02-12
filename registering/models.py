@@ -14,3 +14,6 @@ class Member(models.Model):
     is_admin = models.BooleanField(default=0)
     is_active = models.BooleanField()
 
+    def __str__(self):
+        return f"{self.english_name} {self.email} {self.student_id} {self.membership_years_duration} {self.paid} {self.is_active} {self.is_admin}"
+

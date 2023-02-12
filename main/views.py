@@ -57,6 +57,8 @@ def home(request):
 
     student_info = Member.objects.filter(email= request.session["email"]).values()[0]
     membership_paid = "No" if student_info["paid"] == False else "Yes"
+    query = Sessions.objects.filter(member_email= request.session["email"]).values_list("session_choice")
+    already_signed_up = query[0][0] if query.count() != 0 else '0'    #already signed up will be equal to session choice if exist, else 0
     context = { #PracticeDate
         "PracticeDate": nextPracticeDate,
         "session1_start": settings.SESSION1_START,
@@ -66,7 +68,8 @@ def home(request):
         "english_name": student_info["english_name"],
         "student_id": student_info["student_id"],
         "membership_duration": student_info["membership_years_duration"],
-        "membership_paid": membership_paid
+        "membership_paid": membership_paid,
+        "already_signed_up": already_signed_up,
     }
     return render(request, 'main.html', context)
 
@@ -90,6 +93,11 @@ def practice(request):
     session_choice = request.POST["session_select"]
     if query.count() == 0:
         joining_student = Sessions(date= nextPracticeDate, member_email = request.session['email'], session_choice = session_choice)
+        if "session_flexible" in request.POST:
+            joining_student.session_flexible = 1
+        else:
+            joining_student.session_flexible = 0
+
         joining_student.save()
         messages.add_message(request, messages.SUCCESS, 'You have succesfully requested a spot for this week session, a confirmation email will be sent to you later')
         return redirect(home)
@@ -162,10 +170,6 @@ def confirmSessions(request):
         "time": "7-8pm",
     })
     EmailThread(email_session2_subject, email_session2_body,settings.EMAIL_FROM_USER, session2_emails).start()
-
-
-
-
     return redirect(home)
 
 @login_access_only()

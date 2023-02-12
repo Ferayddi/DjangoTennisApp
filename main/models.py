@@ -14,3 +14,6 @@ class Sessions(models.Model):
     session_flexible =  models.BooleanField(default=0)   #Whether or not the student allowed being switched to another session if full
     session_assigned = models.IntegerField(default=0)    #Which student has been successfully assigned, if not assigned, it will be 0
     attended = models.BooleanField(default=0)
+
+    def __str__(self):
+        return f"{self.date} {self.member_email} {self.session_choice} {self.session_flexible} {self.session_assigned} {self.attended} "
