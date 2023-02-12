@@ -86,6 +86,7 @@ def signUp(request):
 
         
 
+
 def activate_user(request, uidb64, token):
   try:
     uid= force_str(urlsafe_base64_decode(uidb64))
@@ -93,7 +94,8 @@ def activate_user(request, uidb64, token):
   except Exception as e:
     user = None
 
-  if (not user) or (not generate_token.check_token(user, token)):
+ 
+  if (not user) or (generate_token.check_token(user, token) == False):
     context = {}
     return render(request, 'authentication/activate-failed.html', context )
     #

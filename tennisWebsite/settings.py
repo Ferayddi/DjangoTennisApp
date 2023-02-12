@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 CSRF_COOKIE_DOMAIN = None
 CSRF_TRUSTED_ORIGINS = []
-
+PASSWORD_RESET_TIMEOUT=259200
 #Environment: 
 
 # Initialise environment variables
