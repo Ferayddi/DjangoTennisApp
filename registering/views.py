@@ -90,7 +90,6 @@ def activate_user(request, uidb64, token):
   try:
     uid= force_str(urlsafe_base64_decode(uidb64))
     user = Member.objects.get(email=uid)
-    print(user)
   except Exception as e:
     user = None
 
@@ -103,7 +102,6 @@ def activate_user(request, uidb64, token):
     return redirect('/login')
     #return render(request, 'login.html', context)
   else:
-    print(user)
     return render(request, 'authentication/activate-failed.html', {"user":user.english_name} )
 
 
