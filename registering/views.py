@@ -95,16 +95,16 @@ def activate_user(request, uidb64, token):
     user = None
 
 
-  if (user != None) and generate_token.check_token(user, token) == True:
+  if (user != None) and (generate_token.check_token(user, token) == True):
     context = {}
     user.is_active = True
     user.save()
     messages.add_message(request, messages.SUCCESS, 'Email verified, you can now login')
     context = {}
     return render(request, 'login.html', context)
-
-  context = {}
-  return render(request, 'authentication/activate-failed.html', context )
+  else: 
+    context = {}
+    return render(request, 'authentication/activate-failed.html', context )
     #
 
 
