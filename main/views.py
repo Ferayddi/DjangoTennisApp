@@ -19,6 +19,7 @@ class EmailThread(threading.Thread):
     threading.Thread.__init__(self)
 
   def run(self):
+    #from_email='fromepython@gmail.com',
     send_mail(subject= self.subject, message = self.body, from_email = self.from_email, fail_silently = False, recipient_list = self.emails_list, auth_password = settings.EMAIL_HOST_PASSWORD, auth_user= settings.EMAIL_HOST_USER, html_message= self.body)
 
 
