@@ -112,6 +112,13 @@ def confirmSessions(request):
 
     #retrieve records by asceding added int
     students_array = Sessions.objects.filter(date = nextPracticeDate).order_by('id')
+
+
+    #Set them all back to 0, so that we can re run if someone cancels, or just to make sure it is correct
+    for student_temp in students_array:
+        student_temp.session_assigned = 0
+        student_temp.save()
+
     #sort them in respective sessions, based on environment capacity for the sessions
     session1_capacity = int(settings.SESSION1_CAPACITY)
     session2_capacity = int(settings.SESSION2_CAPACITY)
