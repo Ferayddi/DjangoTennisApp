@@ -15,6 +15,7 @@ Main Page
 <div class="container-fluid appContainer">
     <div class="row gy-5 gx-5 mx-0 mx-sm-5  align-items-center justify-content-center large-up-margin bottom-padding up-padding large-bottom-margin">
         <div class=" appContent col-12  col-md-10 col-lg-8 col-xl-5 col-xxl-4 " >
+            
             {% if messages %}
                 <div class=" mt-4 messages">
                     {% for message in messages %}
@@ -42,10 +43,10 @@ Main Page
                 </div>
                 <div class="row">
                     <div class="d-grid col-6">
-                        <a href="" class="btn btn-outline-success">Manage session</a>
+                        <a href="/manageSessions" class="btn btn-outline-success">Manage session</a>
                     </div>
                     <div class="d-grid col-6">
-                        <a href="/confirmSessions" class="btn btn-outline-success">Send confirmations</a>
+                        <a href="/confirmSessions" class="btn btn-outline-success">Confirm Sessions </a>
                     </div>
                 </div>
 
@@ -68,7 +69,7 @@ Main Page
                         <label for="session_select" class="mb-2">Choose your session:</label>
                         <select name ="session_select" id ="session-select" class="form-select" aria-label="Session select">
                             <option selected value="1">Session 1, Basics/Beginners, ({{session1_start}})</option>
-                            <option value="2">Session 2, intermediary, ({{session2_start}})</option>
+                            <option value="2">Session 2, Intermediary, ({{session2_start}})</option>
                           </select>
                           <div class="form-check mt-4">
                             <input class="form-check-input" type="checkbox" value="1" id="session_flexible" name="session_flexible" checked>
@@ -87,7 +88,9 @@ Main Page
                     <div class="mb-3">
                         <div class="row" >
                             <div class="col-5 d-grid">
+                                {% if cancel == True %}
                                 <a class="btn btn-outline-danger btn-lg" href="/cancelPracticeSignUp">Cancel Sign up</a>
+                                {% endif %}
                             </div>
                             <div class="col-6 d-grid">
                                 <button type="submit" class="btn btn-outline-success btn-lg">Sign up</button>

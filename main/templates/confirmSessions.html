@@ -1,0 +1,60 @@
+{% extends 'mainmaster.html' %}
+{% load static %}
+{% block title %}
+Sessions confirmed page
+{% endblock %}
+
+{% block content %}
+<img class="ballImage" src="{% static 'images/tennisBall.png' %}" alt="tennis ball" >
+<img class="manImage" src="{% static 'images/cartoonMan.png' %}" alt="cartoon man playing tennis" >
+
+<div class="container-fluid appContainer">
+    <div class="row gy-5 gx-5 mx-0 mx-sm-5  align-items-start justify-content-around large-up-margin bottom-padding up-padding large-bottom-margin">
+        <div class="col-12 col-md-4 text-center appContent py-4">
+            <h5 style="font-weight:bold">Session 1 expected students:</h5>
+            {% if session1_emails %}
+                {% for email in session1_emails %}
+                    <p> {{email}} </p>
+                {% endfor %}
+            {% endif %}
+        </div> 
+        <div class="col-12 col-md-4 text-center appContent py-4">
+            <h5 style="font-weight:bold">Session 2 expected students:</h5>
+            {% if session2_emails %}
+                {% for email in session2_emails %}
+                    <p> {{email}} </p>
+                {% endfor %}
+            {% endif %}
+        </div> 
+    </div>
+    <div class="row gy-5 gx-5 mx-0 mx-sm-5  align-items-start justify-content-around large-up-margin bottom-padding up-padding large-bottom-margin">
+        <div class="col-12 appContent py-4" style="border-radius: 1em;">
+            <h5 style="font-weight:bold"> Template Email:</h5>
+            <p>Dear members, </p>
+
+            <p>You have successfully registered into the tennis practice session <span class="greenIndicators" >[...]</span>, please find the details below: </p>
+            
+            <p><b>Session  </b><span class="greenIndicators">[...]</span></p>
+            <p><b>Date: </b><span class="greenIndicators">[...]</span></p>
+            <p><b>Time: </b><span class="greenIndicators">[...]</span></p>
+            <p><b>Venue: </b>Courts 1&2 by seafront</p>
+            
+            
+            <h3>Membership: </h3>
+            <p>You are reminded to bring the membership fee when you attend your first session.</p>
+            <p><u>1 year membership:</u> 100 HKD </p>
+            <p><u>4 year membership:</u> 300 HKD </p>
+            
+            <p><b style="color:red">WARNING:</b> </p>
+            <p>Canceling your registration may result in a temporary suspension of your membership. Please be respectful to others!  </p>
+            
+            <p>Best,</p>
+            <p>Looking forward to seeing you all! </p>
+            <p>The Tennis society</p>
+        </div> 
+
+    </div>
+    
+
+</div>
+{% endblock%}

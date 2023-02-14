@@ -37,6 +37,11 @@ $('.adminButton').on("click", () => {
     location.href = "#adminTab";
 });
 
+/*$('.manageButton').on("click", () => {
+    var fired_button = $(this).val();
+    alert("hey");
+});*/
+
 
 
 

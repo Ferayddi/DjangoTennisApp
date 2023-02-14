@@ -1,0 +1,48 @@
+{% extends 'mainmaster.html' %}
+{% load static %}
+
+{% block title %}
+Manage Sessions
+{% endblock %}
+
+
+{% block content  %}
+
+<img class="ballImage" src="{% static 'images/tennisBall.png' %}" alt="tennis ball" >
+<img class="manImage" src="{% static 'images/cartoonMan.png' %}" alt="cartoon man playing tennis" >
+
+
+<div class="container-fluid appContainer">
+    <div class="row gy-5 gx-5 mx-0 mx-sm-5  align-items-start justify-content-around large-up-margin bottom-padding up-padding large-bottom-margin">
+        <div class="col-12 d-grid gap-4 text-center appContent py-4">
+            <h5 style="font-weight:bold">Session 1 expected students:</h5>
+            {% for email in session1_expected %}
+                <a href="processAttendance/{{email}}" class="btn btn-large btn-outline-success manageButton"> {{ email }}</a>
+            {% endfor %}
+        </div> 
+        <div class="col-12 text-center appContent py-4">
+            <h5 style="font-weight:bold">Session 1 attended students:</h5>
+            {% for email in session1_attended %}
+                <p> {{ email }}  </p>
+            {% endfor %}
+        </div> 
+        <div class="col-12 d-grid gap-4 text-center appContent py-4">
+            <h5 style="font-weight:bold">Session 2 expected students:</h5>
+            {% for email in session2_expected %}
+                <a href="processAttendance/{{email}}" class="btn btn-large btn-outline-success manageButton"> {{ email }}</a>
+            {% endfor %}
+        </div> 
+        <div class="col-12 text-center appContent py-4">
+            <h5 style="font-weight:bold">Session 2 attended students:</h5>
+            {% for email in session2_attended %}
+                <p> {{ email }}  </p>
+            {% endfor %}
+        </div> 
+
+    </div>
+    
+    
+
+</div>
+
+{% endblock %}

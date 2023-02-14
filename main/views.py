@@ -6,21 +6,10 @@ from django.contrib import messages
 from datetime import datetime, timedelta
 from django.conf import settings
 from .models import Sessions
-import threading
-from django.core.mail import EmailMessage, send_mail
 from registering.models import Member
+import pytz
 
-class EmailThread(threading.Thread):
-  def __init__(self, subject, body, from_email, emails_list):
-    self.subject = subject
-    self.body = body
-    self.from_email = from_email
-    self.emails_list = emails_list
-    threading.Thread.__init__(self)
 
-  def run(self):
-    #from_email='fromepython@gmail.com',
-    send_mail(subject= self.subject, message = self.body, from_email = self.from_email, fail_silently = False, recipient_list = self.emails_list, auth_password = settings.EMAIL_HOST_PASSWORD, auth_user= settings.EMAIL_HOST_USER, html_message= self.body)
 
 
 def login_access_only():
@@ -50,7 +39,11 @@ def admin_access_only():
 # Create your views here.
 @login_access_only()
 def home(request):
-    dt = datetime.today()
+    dt = datetime.today() 
+    dt = dt.astimezone(pytz.timezone('Hongkong'))       #NOT SURE ABOUT THIS
+    currentHour = dt.astimezone(pytz.timezone('Hongkong')).strftime('%H')
+    currentDay = dt.astimezone(pytz.timezone('Hongkong')).weekday()
+
     day_wanted = int(settings.WEEK_SESSION)   #Which day the sessions are is defined in the environment file
     daysDiff = (day_wanted - dt.weekday()) % 7  
     nextPractice = dt + timedelta(days=daysDiff)
@@ -60,7 +53,9 @@ def home(request):
     membership_paid = "No" if (student_info["paid"] == False or student_info["paid"] == None) else "Yes"
     query = Sessions.objects.filter(member_email= request.session["email"]).values_list("session_choice")
     already_signed_up = query[0][0] if query.count() != 0 else '0'    #already signed up will be equal to session choice if exist, else 0
+    cancel = False if (int(currentHour) >= 18 and int(currentDay) == 1) else True
     context = { #PracticeDate
+        "cancel": cancel,
         "PracticeDate": nextPracticeDate,
         "session1_start": settings.SESSION1_START,
         "session2_start": settings.SESSION2_START,
@@ -83,6 +78,7 @@ def logout(request):
 @login_access_only()
 def practice(request):
     dt = datetime.today()
+    dt = dt.astimezone(pytz.timezone('Hongkong'))       #NOT SURE ABOUT THIS
     day_wanted = int(settings.WEEK_SESSION)   #Which day the sessions are is defined in the environment file
     daysDiff = (day_wanted - dt.weekday()) % 7  
     nextPractice = dt + timedelta(days=daysDiff)
@@ -141,41 +137,25 @@ def confirmSessions(request):
                 session1_capacity -= 1
                 student.save()
 
-    messages.add_message(request, messages.SUCCESS, 'Sessions were successfully sorted, emails should be sent shortly')
 
 
-    #send emails: 
     session1_emails = Sessions.objects.filter(date = nextPracticeDate, session_assigned= "1" ).values_list('member_email', flat=True)
     session1_emails = list(session1_emails)
-    ##########
-
-
-    ###### TRIAL ############
-    email_session1_subject = 'Session 1 confirmation, TENNIS SOCIETY'
-    email_session1_body = render_to_string('practiceEmails/email_body.html', {
-        "session_number": "1",
-        "date": nextPracticeDate,
-        "time": "6-7pm",
-    })
-
-    EmailThread(email_session1_subject, email_session1_body,settings.EMAIL_FROM_USER, session1_emails).start()
-    ###### TRIAL ############
 
     session2_emails = Sessions.objects.filter(date = nextPracticeDate, session_assigned= "2" ).values_list('member_email', flat=True)
     session2_emails = list(session2_emails)
 
-    email_session2_subject = 'Session 2 confirmation, TENNIS SOCIETY'
-    email_session2_body = render_to_string('practiceEmails/email_body.html', {
-        "session_number": "2",
-        "date": nextPracticeDate,
-        "time": "7-8pm",
-    })
-    EmailThread(email_session2_subject, email_session2_body,settings.EMAIL_FROM_USER, session2_emails).start()
-    return redirect(home)
+    context = {
+        "session1_emails":session1_emails,
+        "session2_emails":session2_emails,
+    }
+
+    return render(request, 'confirmSessions.html', context)
 
 @login_access_only()
 def cancelPracticeSignUp(request):
     dt = datetime.today()
+    dt = dt.astimezone(pytz.timezone('Hongkong'))       #NOT SURE ABOUT THIS
     day_wanted = int(settings.WEEK_SESSION)   #Which day the sessions are is defined in the environment file
     daysDiff = (day_wanted - dt.weekday()) % 7  
     nextPractice = dt + timedelta(days=daysDiff)
@@ -190,3 +170,58 @@ def cancelPracticeSignUp(request):
     else:
         messages.add_message(request, messages.WARNING, 'you are not signed up for next week session.')
         return redirect(home)
+
+@admin_access_only()
+def manageSessions(request):
+
+    dt = datetime.today()
+    dt = dt.astimezone(pytz.timezone('Hongkong'))       #NOT SURE ABOUT THIS
+    day_wanted = int(settings.WEEK_SESSION)   #Which day the sessions are is defined in the environment file
+    daysDiff = (day_wanted - dt.weekday()) % 7  
+    nextPractice = dt + timedelta(days=daysDiff)
+    nextPracticeDate = nextPractice.date()
+
+
+    session1_expected = Sessions.objects.filter(session_assigned = 1, attended = 0, date = nextPracticeDate).values_list("member_email", flat= True)
+    session1_expected = list(session1_expected)
+    session1_attended = Sessions.objects.filter(session_assigned = 1,attended = 1, date = nextPracticeDate).values_list("member_email", flat = True)
+    session1_attended = list(session1_attended)
+    
+    session2_expected = Sessions.objects.filter(session_assigned = 2, attended = 0, date = nextPracticeDate).values_list("member_email", flat= True)
+    session2_expected = list(session2_expected)
+    session2_attended = Sessions.objects.filter(session_assigned = 2, attended = 1, date = nextPracticeDate).values_list("member_email", flat = True)
+    session2_attended = list(session2_attended)
+
+    context = {
+        "session1_expected": session1_expected,
+        "session1_attended": session1_attended,
+        "session2_expected": session2_expected,
+        "session2_attended": session2_attended
+    }
+    return render(request, 'manageSessions.html', context)
+
+@admin_access_only()
+def processAttendance(request, email):
+
+    dt = datetime.today()
+    dt = dt.astimezone(pytz.timezone('Hongkong'))       #NOT SURE ABOUT THIS
+    day_wanted = int(settings.WEEK_SESSION)   #Which day the sessions are is defined in the environment file
+    daysDiff = (day_wanted - dt.weekday()) % 7  
+    nextPractice = dt + timedelta(days=daysDiff)
+    nextPracticeDate = nextPractice.date()
+
+
+    query = Sessions.objects.filter(member_email = email, date = nextPracticeDate).all()
+
+    if query.count() == 0: 
+        messages.add_message(request, messages.WARNING, 'Student not found?' )
+        return redirect(home)
+    else:
+        student = query[0]
+    if student.attended== 0:
+        student.attended=1
+    else:
+        student.attended=0
+
+    student.save()
+    return redirect(manageSessions)

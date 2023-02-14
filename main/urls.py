@@ -7,5 +7,7 @@ urlpatterns = [
     path('logout', views.logout, name='logout'),
     path('practice', views.practice, name="practice"),
     path('confirmSessions', views.confirmSessions, name="confirmSessions"),
-    path('cancelPracticeSignUp', views.cancelPracticeSignUp, name="cancelPracticeSignUp")
+    path('cancelPracticeSignUp', views.cancelPracticeSignUp, name="cancelPracticeSignUp"),
+    path('manageSessions', views.manageSessions, name="manageSessions"),
+    path('processAttendance/<email>', views.processAttendance, name="processAttendance")
 ]
