@@ -54,7 +54,7 @@ def home(request):
     query = Sessions.objects.filter(member_email= request.session["email"]).values_list("session_choice")
     already_signed_up = query[0][0] if query.count() != 0 else '0'    #already signed up will be equal to session choice if exist, else 0
     # prevent people from cancelling after 6pm of the day before the practice, or prevent cancellation if day of practice
-    close_registration = False if ((int(currentHour) >= 18 and int(currentDay) == int(settings.WEEK_SESSION - 1)) or (int(currentDay) == settings.WEEK_SESSION)) else True 
+    close_registration = False if ((int(currentHour) >= 18 and int(currentDay) == int(settings.WEEK_SESSION - 1)) or (int(currentDay) == int(settings.WEEK_SESSION))) else True 
     context = { #PracticeDate
         "close_registration": close_registration,
         "PracticeDate": nextPracticeDate,
