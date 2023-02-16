@@ -97,11 +97,12 @@ p {
 
 
 /* DISABLING THE UP AND DOWN ARROWS FOR NUMBER FIELD, AS WELL AS THE SPINNING FUNCTIONALITY */
+/*
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
-}
+}*/
 
 /* */
 
