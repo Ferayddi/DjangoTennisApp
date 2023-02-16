@@ -1,5 +1,5 @@
 from django.db import models
-
+from registering.models import Member
 # Create your models here.
 
 class PriorityRecord(models.Model):
@@ -9,7 +9,7 @@ class PriorityRecord(models.Model):
 
 class Sessions(models.Model):
     date = models.CharField(max_length=250)
-    member_email = models.CharField(max_length=250)
+    member_email = models.ForeignKey(Member, on_delete=models.DO_NOTHING)
     session_choice = models.IntegerField()    #Which session the student chooses
     session_flexible =  models.BooleanField(default=0)   #Whether or not the student allowed being switched to another session if full
     session_assigned = models.IntegerField(default=0)    #Which student has been successfully assigned, if not assigned, it will be 0

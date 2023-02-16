@@ -5,7 +5,7 @@ from django.db import models
 class Member(models.Model):
     english_name = models.CharField(max_length=255)
     chinese_name = models.CharField(max_length=255, null=True)
-    email = models.EmailField()
+    email = models.EmailField(primary_key = True)
     password = models.CharField(max_length=255)
     student_id = models.IntegerField()
     membership_years_duration = models.PositiveSmallIntegerField(null=True)

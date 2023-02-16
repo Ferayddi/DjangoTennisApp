@@ -25,6 +25,10 @@ p {
     margin-top: 60px;
 }
 
+.up-margin {
+    margin-top: 30px;
+}
+
 .large-bottom-padding {
     padding-bottom: 60px;
 }
@@ -90,6 +94,16 @@ p {
     }
 
 }
+
+
+/* DISABLING THE UP AND DOWN ARROWS FOR NUMBER FIELD, AS WELL AS THE SPINNING FUNCTIONALITY */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* */
 
 
 

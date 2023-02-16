@@ -37,10 +37,10 @@ $('.adminButton').on("click", () => {
     location.href = "#adminTab";
 });
 
-$('.manageButton').on("click", () => {
+/*$('.manageButton').on("click", () => {
     var fired_button = $(this).val();
-    alert(fired_button);
-});
+    alert("hey");
+});*/
 
 
 

@@ -32,10 +32,18 @@ Sessions confirmed page
                 {% endfor %}
             {% endif %}
         </div> 
+        <div class="col-12 col-md-5 text-center appContent py-4">
+            <h5 style="font-weight:bold">Students who did not get in:</h5>
+            {% if no_sessions_emails %}
+                {% for email in no_sessions_emails %}
+                    <p> {{email}} </p>
+                {% endfor %}
+            {% endif %}
+        </div> 
     </div>
     <div class="row gy-5 gx-5 mx-0 mx-sm-5  align-items-start justify-content-around large-up-margin bottom-padding up-padding large-bottom-margin">
         <div class="col-12 appContent py-4" style="border-radius: 1em;">
-            <h5 style="font-weight:bold"> Template Email:</h5>
+            <h5 style="font-weight:bold"> Template Email 1:</h5>
             <p>Dear members, </p>
 
             <p>You have successfully registered into the tennis practice session <span class="greenIndicators" >[...]</span>, please find the details below: </p>
@@ -44,18 +52,34 @@ Sessions confirmed page
             <p><b>Date: </b><span class="greenIndicators">[...]</span></p>
             <p><b>Time: </b><span class="greenIndicators">[...]</span></p>
             <p><b>Venue: </b>Courts 1&2 by seafront</p>
+            <br>
             
-            
-            <h3>Membership: </h3>
+            <h4>Membership: </h4>
             <p>You are reminded to bring the membership fee when you attend your first session.</p>
             <p><u>1 year membership:</u> 100 HKD </p>
             <p><u>4 year membership:</u> 300 HKD </p>
             
             <p><b style="color:red">WARNING:</b> </p>
             <p>Canceling your registration may result in a temporary suspension of your membership. Please be respectful to others!  </p>
-            
+            <br>
             <p>Best,</p>
             <p>Looking forward to seeing you all! </p>
+            <p>The Tennis society</p>
+        </div> 
+
+    </div>
+
+    <div class="row gy-5 gx-5 mx-0 mx-sm-5  align-items-start justify-content-around up-margin bottom-padding up-padding large-bottom-margin">
+        <div class="col-12 appContent py-4" style="border-radius: 1em;">
+            <h5 style="font-weight:bold"> Template Email 2:</h5>
+            <p>Dear members, </p>
+
+            <p style="font-weight:bold">Unfortunately, we were not able to assign you to any sessions this week. </p>
+            <p > The session(s) you chose have no more available spots this week.  </p>
+            <br>
+            
+            <p>Best,</p>
+            <p>Looking forward to seeing you next time</p>
             <p>The Tennis society</p>
         </div> 
 

@@ -17,21 +17,21 @@ Main Page
         <div class=" appContent col-12  col-md-10 col-lg-8 col-xl-5 col-xxl-4 " >
             
             {% if messages %}
-                <div class=" mt-4 messages">
-                    {% for message in messages %}
-                    <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</p>
-                    {% endfor %}
-                </div>
+            <div class=" mt-4 messages">
+                {% for message in messages %}
+                <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <div class=" d-grid gap-5 row col-10 mx-auto large-bottom-margin up-padding">
+                <button type="button" class=" order-1 practiceButton btn btn-outline-success largeButton">Practice Sign up</button>
+                <button type="button" class=" order-2 forumButton btn btn-outline-success largeButton">Society forum</button>
+                <button type="button" class="  order-3 profileButton btn btn-outline-success largeButton">Profile</button>
+                <button type="button" class=" order-5 logoutButton btn btn-outline-success largeButton">Log out</button>
+                {% if is_admin == 1 %}
+                <button type="button" class=" order-4 adminButton btn btn-outline-success largeButton">Admin</button>
                 {% endif %}
-                <div class=" d-grid gap-5 row col-10 mx-auto large-bottom-margin up-padding">
-                    <button type="button" class=" order-1 practiceButton btn btn-outline-success largeButton">Practice Sign up</button>
-                    <button type="button" class=" order-2 forumButton btn btn-outline-success largeButton">Society forum</button>
-                    <button type="button" class="  order-3 profileButton btn btn-outline-success largeButton">Profile</button>
-                    <button type="button" class=" order-5 logoutButton btn btn-outline-success largeButton">Log out</button>
-                    {% if is_admin == 1 %}
-                    <button type="button" class=" order-4 adminButton btn btn-outline-success largeButton">Admin</button>
-                    {% endif %}
-                </div>
+            </div>
         </div>
 
         
@@ -81,22 +81,21 @@ Main Page
                     {% if already_signed_up != '0' %}
                     <div class="mb-3">
                         <div class="row">
-                            <p style="color:red; font-weight:bold">You are already signed up for session{{already_signed_up}}</p>
+                            <p style="color:red; font-weight:bold">You are already applied for session{{already_signed_up}}</p>
                         </div>
                     </div>
                     {% endif %}
                     <div class="mb-3">
+                        {% if close_registration == True %}
                         <div class="row" >
                             <div class="col-5 d-grid">
-                                {% if cancel == True %}
                                 <a class="btn btn-outline-danger btn-lg" href="/cancelPracticeSignUp">Cancel Sign up</a>
-                                {% endif %}
                             </div>
                             <div class="col-6 d-grid">
                                 <button type="submit" class="btn btn-outline-success btn-lg">Sign up</button>
                             </div>
-                            
                         </div>
+                        {% endif %}
                     </div>
                 </form>
                 <!-- If already signed up, show the date of practice, which session is signed up and click cancel -->

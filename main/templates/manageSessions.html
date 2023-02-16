@@ -18,30 +18,86 @@ Manage Sessions
             <a href="/" class="btn btn-outline-success btn-lg appContent">Home</a>
         </div> 
     </div>
+    <div class="row gy-5 gx-5 mx-0 mx-sm-5  align-items-start justify-content-around  bottom-padding up-padding ">
+        <div class="col-12 d-grid gap-4 text-center appContent py-4">
+            {% if messages %}
+            <div class=" mt-3 mb-3 messages">
+                {% for message in messages %}
+                <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <h5 style="font-weight:bold">Process a payment:</h5>
+            {% if all_sessions_students %}
+            <form action="/processPayment" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <select required name="student_email" class="form-select" aria-label="studentEmailSelect">
+                        {% for student in all_sessions_students %}
+                            {% if student.member_email.paid != 1 %}
+                                <option value="{{student.member_email.email}}"> {{student.member_email.english_name}}, {{ student.member_email.email }} </option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="membership_duration"  class="form-label">Select membership duration:</label>
+                    <input required placeholder="Membership duration (in years)" name="membership_duration" type="number" class="form-control" id="membership_duration" aria-describedby="membershipDuration">
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Process payment</button>
+                {% endif %}
+            </form>
+            
+        </div>
 
-    <div class="row gy-5 gx-5 mx-0 mx-sm-5  align-items-start justify-content-around large-up-margin bottom-padding up-padding large-bottom-margin">
+    </div>
+    <div class="row gy-5 gx-5 mx-0 mx-sm-5  align-items-start justify-content-around  bottom-padding up-padding large-bottom-margin">
         <div class="col-12 d-grid gap-4 text-center appContent py-4">
             <h5 style="font-weight:bold">Session 1 expected students:</h5>
-            {% for email in session1_expected %}
-                <a href="processAttendance/{{email}}" class="btn btn-lg btn-outline-success manageButton"> {{ email }}</a>
+            {% for student in session1_expected %}
+                {% if student.member_email.paid != 1 %}
+                <a href="processAttendance/{{student.id}}" class="btn btn-lg btn-outline-danger manageButton"> 
+                    {{ student.member_email.english_name }}, {{ student.member_email.email }}</a>
+                {% else  %}
+                <a href="processAttendance/{{student.id}}" class="btn btn-lg btn-outline-success manageButton"> 
+                    {{ student.member_email.english_name }}, {{ student.member_email.email }}</a>
+                {% endif %}
             {% endfor %}
         </div> 
         <div class="col-12 d-grid text-center appContent py-4">
             <h5 style="font-weight:bold">Session 1 attended students:</h5>
-            {% for email in session1_attended %}
-                <a href="processAttendance/{{email}}" class="btn btn-lg btn-outline-success manageButton"> {{ email }}</a>
+            {% for student in session1_attended %}
+                {% if student.member_email.paid != 1 %}
+                <a href="processAttendance/{{student.id}}" class="btn btn-lg btn-outline-danger manageButton"> 
+                    {{ student.member_email.english_name }}, {{ student.member_email.email }}</a>
+                {% else  %}
+                <a href="processAttendance/{{student.id}}" class="btn btn-lg btn-outline-success manageButton"> 
+                    {{ student.member_email.english_name }}, {{ student.member_email.email }}</a>
+                {% endif %}
             {% endfor %}
         </div> 
         <div class="col-12 d-grid gap-4 text-center appContent py-4">
             <h5 style="font-weight:bold">Session 2 expected students:</h5>
-            {% for email in session2_expected %}
-                <a href="processAttendance/{{email}}" class="btn btn-lg btn-outline-success manageButton"> {{ email }}</a>
+            {% for student in session2_expected %}
+                {% if student.member_email.paid != 1 %}
+                <a href="processAttendance/{{student.id}}" class="btn btn-lg btn-outline-danger manageButton"> 
+                    {{ student.member_email.english_name }}, {{ student.member_email.email }}</a>
+                {% else  %}
+                <a href="processAttendance/{{student.id}}" class="btn btn-lg btn-outline-success manageButton"> 
+                    {{ student.member_email.english_name }}, {{ student.member_email.email }}</a>
+                {% endif %}
             {% endfor %}
         </div> 
         <div class="col-12 d-grid text-center appContent py-4">
             <h5 style="font-weight:bold">Session 2 attended students:</h5>
-            {% for email in session2_attended %}
-                <a href="processAttendance/{{email}}" class="btn btn-lg btn-outline-success manageButton"> {{ email }}</a>
+            {% for student in session2_attended %}
+                {% if student.member_email.paid != 1 %}
+                <a href="processAttendance/{{student.id}}" class="btn btn-lg btn-outline-danger manageButton"> 
+                    {{ student.member_email.english_name }}, {{ student.member_email.email }}</a>
+                {% else  %}
+                <a href="processAttendance/{{student.id}}" class="btn btn-lg btn-outline-success manageButton"> 
+                    {{ student.member_email.english_name }}, {{ student.member_email.email }}</a>
+                {% endif %}
             {% endfor %}
         </div> 
 

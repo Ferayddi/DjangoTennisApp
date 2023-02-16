@@ -53,9 +53,10 @@ def home(request):
     membership_paid = "No" if (student_info["paid"] == False or student_info["paid"] == None) else "Yes"
     query = Sessions.objects.filter(member_email= request.session["email"]).values_list("session_choice")
     already_signed_up = query[0][0] if query.count() != 0 else '0'    #already signed up will be equal to session choice if exist, else 0
-    cancel = False if (int(currentHour) >= 18 and int(currentDay) == 1) else True
+    # prevent people from cancelling after 6pm of the day before the practice, or prevent cancellation if day of practice
+    close_registration = False if ((int(currentHour) >= 18 and int(currentDay) == settings.WEEK_SESSION - 1) or (int(currentDay) == settings.WEEK_SESSION)) else True 
     context = { #PracticeDate
-        "cancel": cancel,
+        "close_registration": close_registration,
         "PracticeDate": nextPracticeDate,
         "session1_start": settings.SESSION1_START,
         "session2_start": settings.SESSION2_START,
@@ -89,7 +90,8 @@ def practice(request):
     query = Sessions.objects.filter(member_email= request.session['email'], date= nextPracticeDate)
     session_choice = request.POST["session_select"]
     if query.count() == 0:
-        joining_student = Sessions(date= nextPracticeDate, member_email = request.session['email'], session_choice = session_choice)
+        foreign_member = Member.objects.get(email=request.session['email'])
+        joining_student = Sessions(date= nextPracticeDate, member_email = foreign_member, session_choice = session_choice)
         if "session_flexible" in request.POST:
             joining_student.session_flexible = 1
         else:
@@ -145,16 +147,21 @@ def confirmSessions(request):
                 student.save()
 
 
-
+    #change this so that we actually have the sessions instances, and hence can check in template if one has paid.
     session1_emails = Sessions.objects.filter(date = nextPracticeDate, session_assigned= "1" ).values_list('member_email', flat=True)
     session1_emails = list(session1_emails)
 
     session2_emails = Sessions.objects.filter(date = nextPracticeDate, session_assigned= "2" ).values_list('member_email', flat=True)
     session2_emails = list(session2_emails)
 
+    no_sessions_emails = Sessions.objects.filter(date = nextPracticeDate, session_assigned= "0" ).values_list('member_email', flat=True)
+    no_sessions_emails = list(no_sessions_emails)
+
+
     context = {
         "session1_emails":session1_emails,
         "session2_emails":session2_emails,
+        "no_sessions_email": no_sessions_emails,
     }
 
     return render(request, 'confirmSessions.html', context)
@@ -188,18 +195,17 @@ def manageSessions(request):
     nextPractice = dt + timedelta(days=daysDiff)
     nextPracticeDate = nextPractice.date()
 
-
-    session1_expected = Sessions.objects.filter(session_assigned = 1, attended = 0, date = nextPracticeDate).values_list("member_email", flat= True)
-    session1_expected = list(session1_expected)
-    session1_attended = Sessions.objects.filter(session_assigned = 1,attended = 1, date = nextPracticeDate).values_list("member_email", flat = True)
-    session1_attended = list(session1_attended)
+    #change this so that we can actually choose the session
+    session1_expected = Sessions.objects.filter(session_assigned = 1, attended = 0, date = nextPracticeDate)
+    session1_attended = Sessions.objects.filter(session_assigned = 1,attended = 1, date = nextPracticeDate)
     
-    session2_expected = Sessions.objects.filter(session_assigned = 2, attended = 0, date = nextPracticeDate).values_list("member_email", flat= True)
-    session2_expected = list(session2_expected)
-    session2_attended = Sessions.objects.filter(session_assigned = 2, attended = 1, date = nextPracticeDate).values_list("member_email", flat = True)
-    session2_attended = list(session2_attended)
+    session2_expected = Sessions.objects.filter(session_assigned = 2, attended = 0, date = nextPracticeDate)
+    session2_attended = Sessions.objects.filter(session_assigned = 2, attended = 1, date = nextPracticeDate)
+
+    all_sessions_students = Sessions.objects.filter(date = nextPracticeDate )
 
     context = {
+        "all_sessions_students": all_sessions_students,
         "session1_expected": session1_expected,
         "session1_attended": session1_attended,
         "session2_expected": session2_expected,
@@ -208,7 +214,7 @@ def manageSessions(request):
     return render(request, 'manageSessions.html', context)
 
 @admin_access_only()
-def processAttendance(request, email):
+def processAttendance(request, id):
 
     dt = datetime.today()
     dt = dt.astimezone(pytz.timezone('Hongkong'))       #NOT SURE ABOUT THIS
@@ -218,7 +224,7 @@ def processAttendance(request, email):
     nextPracticeDate = nextPractice.date()
 
 
-    query = Sessions.objects.filter(member_email = email, date = nextPracticeDate).all()
+    query = Sessions.objects.filter(id = id, date = nextPracticeDate).all()
 
     if query.count() == 0: 
         messages.add_message(request, messages.WARNING, 'Student not found?' )
@@ -232,3 +238,24 @@ def processAttendance(request, email):
 
     student.save()
     return redirect(manageSessions)
+
+
+def processPayment(request):
+    if int(request.POST['membership_duration']) == 0:
+        messages.add_message(request, messages.WARNING, 'Membership cannot be set to 0')
+        return redirect(manageSessions)
+    
+    student = Member.objects.filter(email = request.POST['student_email'])
+
+    if len(student) == 0:
+        messages.add_message(request, messages.WARNING, 'Student not found')
+        return redirect(manageSessions)
+    
+    student = student[0]
+
+    student.paid = 1
+    student.membership_years_duration = request.POST['membership_duration']
+    student.save()
+    messages.add_message(request, messages.SUCCESS, 'Payment processed succesfully')
+    return redirect(manageSessions)
+
