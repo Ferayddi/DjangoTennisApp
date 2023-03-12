@@ -34,10 +34,8 @@ Manage Sessions
                 <div class="mb-3">
                     <select required name="student_email" class="form-select" aria-label="studentEmailSelect">
                         {% for student in all_sessions_students %}
-                            {% if student.session_assigned != 0 %}
-                                {% if student.member_email.paid != 1 %}
-                                    <option value="{{student.member_email.email}}"> {{student.member_email.english_name}}, {{ student.member_email.email }} </option>
-                                {% endif %}
+                            {% if student.member_email.paid != 1 %}
+                                <option value="{{student.member_email.email}}"> {{student.member_email.english_name}}, {{ student.member_email.email }} </option>
                             {% endif %}
                         {% endfor %}
                     </select>

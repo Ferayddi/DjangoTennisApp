@@ -51,7 +51,7 @@ def home(request):
 
     student_info = Member.objects.filter(email= request.session["email"]).values()[0]
     membership_paid = "No" if (student_info["paid"] == False or student_info["paid"] == None) else "Yes"
-    query = Sessions.objects.filter(member_email= request.session["email"], date = nextPracticeDate).values_list("session_choice")
+    query = Sessions.objects.filter(member_email= request.session["email"]).values_list("session_choice")
     already_signed_up = query[0][0] if query.count() != 0 else '0'    #already signed up will be equal to session choice if exist, else 0
     # prevent people from cancelling after 6pm of the day before the practice, or prevent cancellation if day of practice
     open_registration = False if ((int(currentHour) >= 18 and int(currentDay) == int(settings.WEEK_SESSION)- 1 ) or (int(currentDay) == int(settings.WEEK_SESSION)) or (int(currentHour) <= 9 and int(currentDay) == int(settings.WEEK_SESSION) + 1 ) )  else True 
